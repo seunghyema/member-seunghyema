@@ -5,7 +5,6 @@ function MovieCard({ movie }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // 클릭하면 info 페이지로 이동, movie 데이터를 state로 함께 넘김
     navigate(`/movie/${movie.id}`, { state: { movie } });
   };
 
@@ -22,7 +21,13 @@ const Card = styled.div`
   cursor: pointer;
   border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.2s ease;
+  background: ${({ theme }) => theme.card};
+  border: 1px solid ${({ theme }) => theme.border};
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 
   img {
     width: 100%;
@@ -33,13 +38,14 @@ const Card = styled.div`
 
   &:hover {
     transform: scale(1.05);
+    border-color: ${({ theme }) => theme.accent};
   }
 `;
 
 const Title = styled.p`
   font-size: 12px;
   padding: 8px 4px;
-  color: #ccc;
+  color: ${({ theme }) => theme.muted};
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -47,6 +53,3 @@ const Title = styled.p`
 `;
 
 export default MovieCard;
-
-
-

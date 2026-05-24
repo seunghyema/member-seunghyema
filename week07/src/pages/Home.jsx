@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getMovies } from "../api/movieApi";
 import MovieCard from "../components/MovieCard";
+import ThemeToggle from "../components/ThemeToggle";
 
 function Home() {
-  const [Movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -17,9 +18,12 @@ function Home() {
 
   return (
     <Container>
-      <h1>🎬 Movie List</h1>
+      <Header>
+        <h1>Movie List</h1>
+        <ThemeToggle />
+      </Header>
       <Grid>
-        {Movies.map((movie) => (
+        {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </Grid>
@@ -28,12 +32,21 @@ function Home() {
 }
 
 const Container = styled.div`
+  min-height: 100vh;
   padding: 40px;
 
   h1 {
-    font-size: 24px;
-    margin-bottom: 24px;
+    font-size: 28px;
+    color: ${({ theme }) => theme.text};
   }
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
 `;
 
 const Grid = styled.div`

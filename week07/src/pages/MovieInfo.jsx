@@ -1,36 +1,40 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import ThemeToggle from "../components/ThemeToggle";
 
 function MovieInfo() {
-  const { state } = useLocation(); 
+  const { state } = useLocation();
   const navigate = useNavigate();
   const movie = state?.movie;
 
-  
   if (!movie) {
     return (
       <Container>
+        <Header>
+          <BackBtn onClick={() => navigate("/")}>Back</BackBtn>
+          <ThemeToggle />
+        </Header>
         <p>Not found</p>
-        <BackBtn onClick={() => navigate("/")}>← back</BackBtn>
       </Container>
     );
   }
 
   return (
     <Container>
-      <BackBtn onClick={() => navigate("/")}>← back</BackBtn>
+      <Header>
+        <BackBtn onClick={() => navigate("/")}>Back</BackBtn>
+        <ThemeToggle />
+      </Header>
 
       <Content>
         <img src={movie.medium_cover_image} alt={movie.title} />
 
         <Info>
-
-            
           <h1>{movie.title}</h1>
           <MetaRow>
-            <span>⭐ {movie.rating}</span>
+            <span>Rating {movie.rating}</span>
             <span>{movie.year}</span>
-            <span>{movie.runtime}분</span>
+            <span>{movie.runtime} min</span>
           </MetaRow>
           {movie.genres && (
             <Genres>
@@ -47,21 +51,33 @@ function MovieInfo() {
 }
 
 const Container = styled.div`
+  min-height: 100vh;
   padding: 40px;
 `;
 
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+`;
+
 const BackBtn = styled.button`
-  background: none;
-  border: 1px solid #555;
-  color: white;
+  background: ${({ theme }) => theme.buttonBg};
+  border: 1px solid ${({ theme }) => theme.border};
+  color: ${({ theme }) => theme.text};
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  margin-bottom: 32px;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
-    border-color: white;
+    border-color: ${({ theme }) => theme.accent};
+    transform: translateY(-2px);
   }
 `;
 
@@ -75,6 +91,17 @@ const Content = styled.div`
     object-fit: cover;
     border-radius: 10px;
     flex-shrink: 0;
+    border: 1px solid ${({ theme }) => theme.border};
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+  }
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+
+    img {
+      width: 180px;
+      height: 270px;
+    }
   }
 `;
 
@@ -85,14 +112,16 @@ const Info = styled.div`
 
   h1 {
     font-size: 32px;
+    color: ${({ theme }) => theme.text};
   }
 `;
 
 const MetaRow = styled.div`
   display: flex;
   gap: 20px;
-  color: #aaa;
+  color: ${({ theme }) => theme.muted};
   font-size: 14px;
+  flex-wrap: wrap;
 `;
 
 const Genres = styled.div`
@@ -102,17 +131,17 @@ const Genres = styled.div`
 `;
 
 const Genre = styled.span`
-  background: #333;
+  background: ${({ theme }) => theme.chipBg};
+  color: ${({ theme }) => theme.text};
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
-  color: #ddd;
 `;
 
 const Summary = styled.p`
   font-size: 15px;
   line-height: 1.7;
-  color: #bbb;
+  color: ${({ theme }) => theme.muted};
   max-width: 600px;
 `;
 
