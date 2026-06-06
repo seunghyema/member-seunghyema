@@ -40,7 +40,7 @@ function App() {
     );
   }, []);
 
-  const editTodo = useCallback((id, newText) => {
+  const editTodo = useCallback((id, newText) => { 
     setTodos((prev) =>
       prev.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)),
     );
